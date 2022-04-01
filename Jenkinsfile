@@ -1,7 +1,7 @@
 pipeline {
     agent any
     tools {
-        maven 'Maven 3.3.9'
+        maven "MavenTest"
         jdk 'jdk8'
     }
     options {
