@@ -2,7 +2,7 @@ pipeline {
     agent any
     tools {
         maven "MavenTest"
-        jdk 'jdk8'
+        jdk 'OpenJDK-11'
     }
     options {
         skipStagesAfterUnstable()
