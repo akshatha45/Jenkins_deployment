@@ -19,7 +19,11 @@ pipeline {
 
         stage ('Build') {
             steps {
-                sh 'mvn -B -DskipTests clean package' 
+            withSonarQubeEnv('sonar') {
+                    withMaven(maven:'MavenTest') {
+                        sh 'mvn -B -DskipTests clean package sonar:sonar'
+                    }
+                }
             }
         }
         
@@ -33,6 +37,14 @@ pipeline {
                 }
                 failure {
                     echo "Test cases failed"
+                }
+            }
+        }
+        
+        stage("Quality Gate") {
+            steps {
+                timeout(time: 1, unit: 'HOURS') {
+                    waitForQualityGate abortPipeline: true
                 }
             }
         }
