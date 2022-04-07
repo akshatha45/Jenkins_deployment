@@ -19,11 +19,7 @@ pipeline {
 
         stage ('Build') {
             steps {
-            withSonarQubeEnv('sonar') {
-                    withMaven(maven:'MavenTest') {
                         sh 'mvn -B -DskipTests clean package sonar:sonar'
-                    }
-                }
             }
         }
         
@@ -40,12 +36,10 @@ pipeline {
                 }
             }
         }
-        
-        stage("Quality Gate") {
-            steps {
-                timeout(time: 1, unit: 'HOURS') {
-                    waitForQualityGate abortPipeline: true
-                }
+                
+        stage('upload to nexus') {
+            steps { 
+                nexusArtifactUploader artifacts: [[artifactId: 'Jenkins_deployment', classifier: '', file: 'target/Jenkins_deployment-0.0.1-SNAPSHOT.war', type: 'war']], credentialsId: 'Nexus3', groupId: 'Sample', nexusUrl: '10.0.0.4', nexusVersion: 'nexus2', protocol: 'http', repository: 'http://10.0.0.4:8081/repository/Jenkins-app-deployable/', version: '0.0.1-SNAPSHOT'
             }
         }
     }
