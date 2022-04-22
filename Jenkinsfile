@@ -39,7 +39,7 @@ pipeline {
                 
         stage('upload to nexus') {
             steps { 
-                nexusArtifactUploader artifacts: [[artifactId: 'Jenkins_deployment', classifier: '', file: 'target/Jenkins_deployment-0.0.1-SNAPSHOT.war', type: 'war']], credentialsId: 'Nexus3', groupId: 'Sample', nexusUrl: '10.0.0.4:8081', nexusVersion: 'nexus2', protocol: 'http', repository: '/Jenkins-app-deployable/', version: '0.0.1-SNAPSHOT'
+                nexusArtifactUploader artifacts: [[artifactId: 'Jenkins_deployment', classifier: '', file: 'target/Jenkins_deployment-0.0.1-SNAPSHOT.war', type: 'war']], credentialsId: 'Nexus3', groupId: 'Sample', nexusUrl: '10.0.0.4:8081', nexusVersion: 'nexus2', protocol: 'http', repository: 'Jenkins-app-deployable/', version: '0.0.1-SNAPSHOT'
             }
         }
     }
