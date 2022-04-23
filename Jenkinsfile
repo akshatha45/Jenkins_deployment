@@ -64,7 +64,7 @@ stage("Publish to Nexus Repository Manager") {
                         nexusArtifactUploader(
                             nexusVersion: NEXUS_VERSION,
                             protocol: 'http',
-                            nexusUrl: 10.0.0.4:8081,
+                            nexusUrl: '10.0.0.4:8081',
                             groupId: pom.groupId,
                             version: pom.version,
                             repository: 'Jenkins-app-deployable',
