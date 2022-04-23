@@ -30,6 +30,6 @@ public class SampleDeployControllerTest {
     void serviceIsAvailable() throws Exception {
         mvc.perform(get("/test"))
                 .andExpect(status().isOk())
-                .andExpect(content().string("Trying to fail test case."));
+                .andExpect(content().string("Testing Jenkins Deployment REST api."));
     }
 }
