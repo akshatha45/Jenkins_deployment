@@ -62,7 +62,7 @@ stage("Publish to Nexus Repository Manager") {
                     if(artifactExists) {
                         echo "*** File: ${artifactPath}, group: ${pom.groupId}, packaging: ${pom.packaging}, version ${pom.version}";
                         nexusArtifactUploader(
-                            nexusVersion: NEXUS_VERSION,
+                            nexusVersion: 'NEXUS3',
                             protocol: 'http',
                             nexusUrl: '10.0.0.4:8081',
                             groupId: pom.groupId,
