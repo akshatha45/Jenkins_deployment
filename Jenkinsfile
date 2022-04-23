@@ -51,13 +51,39 @@ pipeline {
             }
         }
                 
-        stage('upload to nexus') {
-            steps { 
-                mvn deploy:deploy-file \
-               -Dfile=target/Jenkins_deployment-0.0.1-SNAPSHOT.war \
-               -Dpackaging=jar -DgroupId=Sample -DartifactId=Jenkins_deployment -Dversion=0.0.1-SNAPSHOT \
-               -DrepositoryId=Jenkins-app-deployable \
-               -Durl=http://localhost:8081/repository/Jenkins-app-deployable/
+stage("Publish to Nexus Repository Manager") {
+            steps {
+                script {
+                    pom = readMavenPom file: "pom.xml";
+                    filesByGlob = findFiles(glob: "target/*.${pom.packaging}");
+                    echo "${filesByGlob[0].name} ${filesByGlob[0].path} ${filesByGlob[0].directory} ${filesByGlob[0].length} ${filesByGlob[0].lastModified}"
+                    artifactPath = filesByGlob[0].path;
+                    artifactExists = fileExists artifactPath;
+                    if(artifactExists) {
+                        echo "*** File: ${artifactPath}, group: ${pom.groupId}, packaging: ${pom.packaging}, version ${pom.version}";
+                        nexusArtifactUploader(
+                            nexusVersion: NEXUS_VERSION,
+                            protocol: 'http',
+                            nexusUrl: 10.0.0.4:8081,
+                            groupId: pom.groupId,
+                            version: pom.version,
+                            repository: 'Jenkins-app-deployable',
+                            credentialsId: 'nexus3',
+                            artifacts: [
+                                [artifactId: pom.artifactId,
+                                classifier: '',
+                                file: artifactPath,
+                                type: pom.packaging],
+                                [artifactId: pom.artifactId,
+                                classifier: '',
+                                file: "pom.xml",
+                                type: "pom"]
+                            ]
+                        );
+                    } else {
+                        error "*** File: ${artifactPath}, could not be found";
+                    }
+                }
             }
         }
     }
