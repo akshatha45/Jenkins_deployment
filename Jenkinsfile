@@ -53,7 +53,11 @@ pipeline {
                 
         stage('upload to nexus') {
             steps { 
-                nexusArtifactUploader artifacts: [[artifactId: 'Jenkins_deployment', classifier: '', file: 'target/Jenkins_deployment-0.0.1-SNAPSHOT.war', type: 'war']], credentialsId: 'Nexus3', groupId: 'Sample', nexusUrl: '10.0.0.4:8081', nexusVersion: 'NEXUS3', protocol: 'http', repository: 'Jenkins-app-deployable/', version: '0.0.1-SNAPSHOT'
+                mvn deploy:deploy-file \
+               -Dfile=target/Jenkins_deployment-0.0.1-SNAPSHOT.war \
+               -Dpackaging=jar -DgroupId=Sample -DartifactId=Jenkins_deployment -Dversion=0.0.1-SNAPSHOT \
+               -DrepositoryId=Jenkins-app-deployable \
+               -Durl=http://localhost:8081/repository/Jenkins-app-deployable/
             }
         }
     }
