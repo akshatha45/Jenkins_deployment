@@ -17,15 +17,9 @@ pipeline {
             }
         }
 
-        stage ('Build') {
+        stage ('Build Test and compile') {
             steps {
                         sh 'mvn clean package'
-            }
-        }
-        
-        stage('Test') { 
-            steps {
-                sh 'mvn clean verify' 
             }
             post {
                 always {
@@ -34,6 +28,12 @@ pipeline {
                 failure {
                     echo "Test cases failed"
                 }
+            }
+        }
+        
+        stage('verify') { 
+            steps {
+                sh 'mvn clean verify' 
             }
         }
         
