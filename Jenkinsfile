@@ -36,6 +36,20 @@ pipeline {
                 }
             }
         }
+        
+         stage('Publish HTML Report') { 
+            steps {
+            publishHTML target: [
+            allowMissing: true,
+            alwaysLinkToLastBuild: false,
+            keepAll: true,
+            reportDir: 'target/site/jacoco/',
+            reportFiles: 'index.html',
+            reportName: 'Code Coverage',
+            reportTitles: ''
+          ]
+            }
+        }
                 
         stage('upload to nexus') {
             steps { 
