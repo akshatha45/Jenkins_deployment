@@ -89,7 +89,7 @@ stage("Publish to Nexus Repository Manager") {
     }
     post {
            failure {
-               mail to: 'Akshatha.Hv@mindtree.com',
+               mail to: 'akshatha45@gmail.com',
                subject: "Build failed in Jenkins: ${currentBuild.fullDisplayName}",
                body: "Something went wrong during Jenkins pipeline build with ${env.BUILD_URL}"
            }
